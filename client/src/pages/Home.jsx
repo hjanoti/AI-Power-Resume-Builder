@@ -1,7 +1,13 @@
+import Banner from "../components/home/Banner";
+import Features from "../components/home/Features";
+import Hero from "../components/home/Hero";
+
 const Home = () => {
     return(
         <div>
-            <h1>Home Page</h1>
+            <Banner /> 
+            <Hero />
+            <Features/>
         </div>
     )
 }
