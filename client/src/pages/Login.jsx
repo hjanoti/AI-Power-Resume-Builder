@@ -20,7 +20,7 @@ const Login = () => {
         setFormData(prev => ({ ...prev, [name]: value }))
     }
     return(
-        <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 mx-8">
             <form onSubmit={handleSubmit} className="sm:w-[350px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white">
                 <h1 className="text-gray-900 text-3xl mt-10 font-medium">{state === "login" ? "Login" : "Sign up"}</h1>
                 <p className="text-gray-500 text-sm mt-2">Please {state} in to continue</p>
