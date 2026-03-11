@@ -2,7 +2,10 @@ import { Mail, MailIcon, User2Icon, Lock } from "lucide-react"
 import { useState } from "react"
 
 const Login = () => {
-    const [state, setState] = useState("login")
+
+    const query = new URLSearchParams(window.location.search);
+    const urlState = query.get('state');
+    const [state, setState] = useState(urlState || "login")
 
     const [formData, setFormData] = useState({
         name: '',
@@ -20,8 +23,8 @@ const Login = () => {
         setFormData(prev => ({ ...prev, [name]: value }))
     }
     return(
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 mx-8">
-            <form onSubmit={handleSubmit} className="sm:w-[350px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <form onSubmit={handleSubmit} className="sm:w-[350px] w-full text-center border border-gray-300/60 rounded-2xl mx-8 px-8 bg-white">
                 <h1 className="text-gray-900 text-3xl mt-10 font-medium">{state === "login" ? "Login" : "Sign up"}</h1>
                 <p className="text-gray-500 text-sm mt-2">Please {state} in to continue</p>
                 {state !== "login" && (
@@ -38,13 +41,13 @@ const Login = () => {
                     <Lock size={16} color="#6B7280"/>
                     <input type="password" name="password" placeholder="Password" className="border-none outline-none ring-0" value={formData.password} onChange={handleChange} required />
                 </div>
-                <div className="mt-4 text-left text-indigo-500">
+                <div className="mt-4 text-left text-green-500 flex items-center justify-center my-2">
                     <button className="text-sm" type="reset">Forget password?</button>
                 </div>
-                <button type="submit" className="mt-2 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity">
+                <button type="submit" className="mt-2 w-full h-11 rounded-full text-white bg-green-500 hover:opacity-90 transition-opacity">
                     {state === "login" ? "Login" : "Sign up"}
                 </button>
-                <p onClick={() => setState(prev => prev === "login" ? "register" : "login")} className="text-gray-500 text-sm mt-3 mb-11">{state === "login" ? "Don't have an account?" : "Already have an account?"} <a href="#" className="text-indigo-500 hover:underline">click here</a></p>
+                <p onClick={() => setState(prev => prev === "login" ? "register" : "login")} className="text-gray-500 text-sm mt-3 mb-11">{state === "login" ? "Don't have an account?" : "Already have an account?"} <a href="#" className="text-green-500 hover:underline">click here</a></p>
             </form>
         </div>
     )
