@@ -43,6 +43,10 @@ const Dashboard = () => {
     navigate("/app/builder/resume123");
   };
 
+  const handleResumeClick = (resumeId) => {
+    navigate(`/app/builder/${resumeId}`);
+  };
+
   return (
     <div>
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -95,6 +99,7 @@ const Dashboard = () => {
                   background: `linear-gradient(135deg, ${baseColor}15, ${baseColor}35)`,
                   borderColor: baseColor + "40",
                 }}
+                onClick={() => handleResumeClick(resume._id)}
               >
 
                 {/* Resume Icon */}
@@ -120,11 +125,17 @@ const Dashboard = () => {
                 {/* Action Buttons */}
                 <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition">
 
-                  <button className="p-1.5 bg-white/80 backdrop-blur border border-red-300 rounded-md hover:bg-red-50 transition">
+                  <button 
+                    className="p-1.5 bg-white/80 backdrop-blur border border-red-300 rounded-md hover:bg-red-50 transition"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Trash2 className="size-4 text-red-500" />
                   </button>
 
-                  <button className="p-1.5 bg-white/80 backdrop-blur border border-blue-300 rounded-md hover:bg-blue-50 transition">
+                  <button 
+                    className="p-1.5 bg-white/80 backdrop-blur border border-blue-300 rounded-md hover:bg-blue-50 transition"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <PencilIcon className="size-4 text-blue-500" />
                   </button>
 
