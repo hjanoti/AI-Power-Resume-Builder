@@ -5,8 +5,6 @@ import MinimalImageTemplate from "./templates/MinimalImageTemplate";
 
 const ResumePreview = ({resumeData, template, accentColor, classes = ''}) => {
 
-    console.log("resumeData-", resumeData, ", template-", template )
-
     const renderTemplate = () => {
         switch (template) {
             case 'modern':
