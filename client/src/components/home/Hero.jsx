@@ -19,9 +19,9 @@ const Hero = () => {
             <div className="min-h-screen pb-20">
                 {/* Navbar */}
                 <nav className="z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-40 text-sm">
-                    <a href="https://prebuiltui.com">
+                    <Link to="/" className="flex items-center">
                        <img src="/logo.svg" alt="Logo"  className="h-11 w-auto"/>
-                    </a>
+                    </Link>
 
                     <div className="hidden md:flex items-center gap-8 transition duration-500 text-slate-800">
                         <a href="#" className="hover:text-green-600 transition">Home</a>
@@ -58,7 +58,7 @@ const Hero = () => {
                 </div>
 
                 {/* Hero Section */}
-                <div className="relative flex flex-col items-center justify-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
+                <div className="relative flex flex-col gap-8 items-center justify-center text-sm px-4 md:px-16 lg:px-24 xl:px-40 text-black">
                     <div className="absolute top-28 xl:top-10 -z-10 left-1/4 size-72 sm:size-96 xl:size-120 2xl:size-132 bg-green-300 blur-[100px] opacity-30"></div>
 
                     {/* Avatars + Stars */}

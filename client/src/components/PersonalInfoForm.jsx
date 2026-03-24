@@ -1,11 +1,42 @@
-import { User } from "lucide-react";
+import { User, Mail, Phone, MapPin, BriefcaseBusiness, Linkedin, Github, Globe } from "lucide-react";
 
 const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground}) => {
+
+    const handleInputChange = (field, value) => {
+        onChange({...data, [field]: value});
+    }
 
     const handleImageUpload = (field, value) => 
         { 
           onChange({...data, [field]: value});
         };
+
+    const fields = [
+        {
+            key: "full_name", label: "Full Name", icon: User, type: "text", required: true
+        }, 
+        {
+            key: "email", label: "Email Address", icon: Mail, type: "email", required: true
+        },
+        {
+            key: "phone", label: "Phone Number", icon: Phone, type: "tel", required: false
+        },
+        {
+            key: "location", label: "Location", icon: MapPin, type: "text", required: false
+        },
+        {
+            key: "profession", label: "Profession", icon: BriefcaseBusiness, type: "text", required: false
+        },
+        {
+            key: "linkedin", label: "LinkedIn Profile", icon: Linkedin, type: "url", required: false
+        },
+        // {
+        //     key: "github", label: "GitHub Profile", icon: Github, type: "url", required: false
+        // },
+        {
+            key: "website", label: "Personal Website", icon: Globe, type: "url", required: false
+        }
+    ]
 
     return (
         <div>
@@ -43,6 +74,26 @@ const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground
                     </div>
                 )}
             </div>
+
+            {
+                fields.map((field) => (
+                    <div key={field?.key} className="space-y-1 mt-5">
+                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            {field?.icon && <field.icon className="size-4" />}
+                            {field?.label}
+                            {field?.required && <span className="text-red-500">*</span>}
+                        </label>
+                        <input 
+                          type={field?.type || 'text'} 
+                          value={data[field?.key] || ''} 
+                          onChange={(e) => handleInputChange(field?.key, e.target.value)} 
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-sm" 
+                          placeholder={`Enter Your ${field?.label?.toLowerCase()}`}
+                          required={field?.required}
+                        />
+                    </div>
+                ))
+            }
         </div>
     );
 };
