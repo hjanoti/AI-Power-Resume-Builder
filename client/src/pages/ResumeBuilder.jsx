@@ -29,7 +29,6 @@ const ResumeBuilder = () => {
         // TODO: Load existing resume
         const resume = dummyResumeData.find(resume => resume._id === resumeId);
         if (resume) {
-            console.log("resumeDataValue-", resume )
             setResumeData(resume);
             document.title = resume.title;
         }
