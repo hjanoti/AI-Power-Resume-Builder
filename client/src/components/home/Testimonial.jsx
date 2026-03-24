@@ -48,7 +48,7 @@ const Testimonial = () => {
   return (
     <div className="container mx-auto px-4">
         <div id="testimonial" className="flex flex-col items-center my-10 scroll-mt-12">
-            <div class="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
+            <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
               <BookUserIcon className='size-4.5 stroke-green-600'/>
               <span>Testimonials</span>
             </div>

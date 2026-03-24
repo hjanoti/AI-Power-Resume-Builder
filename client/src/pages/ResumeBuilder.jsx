@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { dummyResumeData } from "../assets/assets";
 import { ArrowLeftIcon, User, FileText, Briefcase, FolderIcon, Sparkles, GraduationCap, ChevronLeft, ChevronRight } from "lucide-react";
 import PersonalInfoForm from "../components/PersonalInfoForm";
+import ResumePreview from "../components/ResumePreview";
+import TemplateSelector from "../components/TemplateSelector";
+import ColorPicker from "../components/ColorPicker";
 
 const ResumeBuilder = () => {
 
@@ -11,17 +14,15 @@ const ResumeBuilder = () => {
     const [resumeData, setResumeData] = useState({
         _id: "",
         title: "",
-        professional_info: "",
+        personal_info: {},
         professional_summary: "",
         experience: [],
         education: [],
         projects: [],
         skills: [],
-        templates: "classic",
+        template: "classic",
         accent_color: "#3B82F6",
         public: false,
-        // createdAt: "",
-        // updatedAt: ""
     });
 
     const loadingExistingResume = async() => {
@@ -72,7 +73,16 @@ const ResumeBuilder = () => {
 
                             {/* Section Nevigation */}
                             <div className="flex justify-between items-center mb-6 border-b border-gray-300 py-1">
-                                <div></div>
+                                <div className="flex items-center gap-2">
+                                    <TemplateSelector 
+                                        selectedTemplate={resumeData.template} 
+                                        onChange={(template) => setResumeData({...resumeData, template})} 
+                                    />
+                                    <ColorPicker 
+                                        selectedColor={resumeData.accent_color} 
+                                        onChange={(color) => setResumeData({...resumeData, accent_color: color})} 
+                                    />
+                                </div>
                                 <div className="flex items-center gap-2">
                                     {activeSectionIndex !== 0 && (
                                         <button
@@ -104,7 +114,7 @@ const ResumeBuilder = () => {
                                 {activeSection.id === "personal" && (
                                     <PersonalInfoForm data={resumeData?.personal_info || {}} onChange={(data) => setResumeData(prev => ({...prev, personal_info: data}))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground}/>
                                 )}
-                                {activeSection.id === "experience" && (
+                                {/* {activeSection.id === "experience" && (
                                     <ExperienceForm />
                                 )}
                                 {activeSection.id === "education" && (
@@ -115,14 +125,22 @@ const ResumeBuilder = () => {
                                 )}
                                 {activeSection.id === "summary" && (
                                     <SummaryForm />
-                                )}
+                                )} */}
                             </div>
                         </div>
                     </div>
 
                     {/* Right Panel - Preview */}
-                    <div className="relative bg-white rounded-2xl shadow-lg p-6 lg:col-span-8">
-                        
+                    <div className="lg:col-span-7 max-lg:mt-6">
+                        <div>
+                            {/* ---- Buttons ---- */}
+                            {/* <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Preview
+                            </button> */}
+
+                            {/* ---- Resume Preview ---- */}
+                            <ResumePreview resumeData={resumeData} template={resumeData?.template} accentColor={resumeData?.accent_color} />
+                        </div>
                     </div>
                 </div>
             </div>
