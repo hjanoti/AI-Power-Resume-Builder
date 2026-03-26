@@ -33,9 +33,9 @@ const ColorPicker = ({selectedColor, onChange}) => {
                         {color.map((color) => (
                             <div 
                             key={color.value}
-                            onClick={() => onChange(color.value)}
+                            onClick={() => {onChange(color.value); setIsOpen(false);}}
                             className="relative cursor-pointer group flex flex-col rounded-full"
-                            style={{backgroundColor: color.value}}
+                            // style={{backgroundColor: color.value}}
                             >
                                 <div 
                                 className={`w-12 h-12 rounded-full border-2 border-transparent group-hover:border-black/25 transition-colors`}
