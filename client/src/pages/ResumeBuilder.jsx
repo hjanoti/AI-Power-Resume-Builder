@@ -31,13 +31,15 @@ const ResumeBuilder = () => {
     });
 
     const loadingExistingResume = async() => {
-        // TODO: Load existing resume
         const resume = dummyResumeData.find(resume => resume._id === resumeId);
+        
         if (resume) {
             setResumeData(resume);
             document.title = resume.title;
         }
     };
+
+    console.log("resume", resumeData);
 
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [removeBackground, setRemoveBackground] = useState(false);
@@ -70,7 +72,7 @@ const ResumeBuilder = () => {
 
         if(navigator.share){
             navigator.share({
-                title: resumeData.title,
+                title: "My Resume",
                 url: resumeUrl
             });
         } else {
