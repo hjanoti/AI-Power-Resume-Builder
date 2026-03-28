@@ -16,14 +16,14 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
 
                 <div className="col-span-1  py-10">
                     {/* Image */}
-                    {data.personal_info?.image && typeof data.personal_info.image === 'string' ? (
+                    {data?.personal_info?.image && typeof data?.personal_info?.image === 'string' ? (
                         <div className="mb-6">
-                            <img src={data.personal_info.image} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" style={{ background: accentColor+'70' }} />
+                            <img src={data?.personal_info?.image} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" style={{ background: accentColor+'70' }} />
                         </div>
                     ) : (
-                        data.personal_info?.image && typeof data.personal_info.image === 'object' ? (
+                        data?.personal_info?.image && typeof data?.personal_info?.image === 'object' ? (
                             <div className="mb-6">
-                                <img src={URL.createObjectURL(data.personal_info.image)} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" />
+                                <img src={URL.createObjectURL(data?.personal_info?.image)} alt="Profile" className="w-32 h-32 object-cover rounded-full mx-auto" />
                             </div>
                         ) : null
                     )}
@@ -32,7 +32,7 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                 {/* Name + Title */}
                 <div className="col-span-2 flex flex-col justify-center py-10 px-8">
                     <h1 className="text-4xl font-bold text-zinc-700 tracking-widest">
-                        {data.personal_info?.full_name || "Your Name"}
+                        {data?.personal_info?.full_name || "Your Name"}
                     </h1>
                     <p className="uppercase text-zinc-600 font-medium text-sm tracking-widest">
                         {data?.personal_info?.profession || "Profession"}
@@ -49,35 +49,35 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                             CONTACT
                         </h2>
                         <div className="space-y-2 text-sm">
-                            {data.personal_info?.phone && (
+                            {data?.personal_info?.phone && (
                                 <div className="flex items-center gap-2">
                                     <Phone size={14} style={{ color: accentColor }} />
-                                    <span>{data.personal_info.phone}</span>
+                                    <span>{data?.personal_info?.phone}</span>
                                 </div>
                             )}
-                            {data.personal_info?.email && (
+                            {data?.personal_info?.email && (
                                 <div className="flex items-center gap-2">
                                     <Mail size={14} style={{ color: accentColor }} />
-                                    <span>{data.personal_info.email}</span>
+                                    <span>{data?.personal_info?.email}</span>
                                 </div>
                             )}
-                            {data.personal_info?.location && (
+                            {data?.personal_info?.location && (
                                 <div className="flex items-center gap-2">
                                     <MapPin size={14} style={{ color: accentColor }} />
-                                    <span>{data.personal_info.location}</span>
+                                    <span>{data?.personal_info?.location}</span>
                                 </div>
                             )}
                         </div>
                     </section>
 
                     {/* Education */}
-                    {data.education && data.education.length > 0 && (
+                    {data?.education && data?.education?.length > 0 && (
                         <section className="mb-8">
                             <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
                                 EDUCATION
                             </h2>
                             <div className="space-y-4 text-sm">
-                                {data.education.map((edu, index) => (
+                                {data?.education?.map((edu, index) => (
                                     <div key={index}>
                                         <p className="font-semibold uppercase">{edu.degree}</p>
                                         <p className="text-zinc-600">{edu.institution}</p>
@@ -91,13 +91,13 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     )}
 
                     {/* Skills */}
-                    {data.skills && data.skills.length > 0 && (
+                    {data?.skills && data?.skills.length > 0 && (
                         <section>
                             <h2 className="text-sm font-semibold tracking-widest text-zinc-600 mb-3">
                                 SKILLS
                             </h2>
                             <ul className="space-y-1 text-sm">
-                                {data.skills.map((skill, index) => (
+                                {data?.skills.map((skill, index) => (
                                     <li key={index}>{skill}</li>
                                 ))}
                             </ul>
@@ -109,25 +109,25 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                 <main className="col-span-2 p-8 pt-0">
 
                     {/* Summary */}
-                    {data.professional_summary && (
+                    {data?.professional_summary && (
                         <section className="mb-8">
                             <h2 className="text-sm font-semibold tracking-widest mb-3" style={{ color: accentColor }} >
                                 SUMMARY
                             </h2>
                             <p className="text-zinc-700 leading-relaxed">
-                                {data.professional_summary}
+                                {data?.professional_summary}
                             </p>
                         </section>
                     )}
 
                     {/* Experience */}
-                    {data.experience && data.experience.length > 0 && (
+                    {data?.experience && data?.experience.length > 0 && (
                         <section>
                             <h2 className="text-sm font-semibold tracking-widest mb-4" style={{ color: accentColor }} >
                                 EXPERIENCE
                             </h2>
                             <div className="space-y-6 mb-8">
-                                {data.experience.map((exp, index) => (
+                                {data?.experience.map((exp, index) => (
                                     <div key={index}>
                                         <div className="flex justify-between items-center">
                                             <h3 className="font-semibold text-zinc-900">
@@ -155,13 +155,13 @@ const MinimalImageTemplate = ({ data, accentColor }) => {
                     )}
 
                     {/* Projects */}
-                    {data.project && data.project.length > 0 && (
+                    {data?.project && data?.project.length > 0 && (
                         <section>
                             <h2 className="text-sm uppercase tracking-widest font-semibold" style={{ color: accentColor }}>
                                 PROJECTS
                             </h2>
                             <div className="space-y-4">
-                                {data.project.map((project, index) => (
+                                {data?.project.map((project, index) => (
                                     <div key={index}>
                                         <h3 className="text-md font-medium text-zinc-800 mt-3">{project.name}</h3>
                                         <p className="text-sm mb-1" style={{ color: accentColor }} >
