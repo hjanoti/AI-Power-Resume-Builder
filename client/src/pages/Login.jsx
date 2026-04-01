@@ -1,5 +1,9 @@
 import { Mail, MailIcon, User2Icon, Lock } from "lucide-react"
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import api from "../configs/api";
+import { login } from "../app/features/authSlice"
+import toast from "react-hot-toast"
 
 const Login = () => {
 
@@ -13,8 +17,21 @@ const Login = () => {
         password: ''
     })
 
+    const dispatch = useDispatch()
+
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        try{
+
+            const { data } = await api.post(`/api/users/${state}`, formData)
+            dispatch(login(data));
+            localStorage.setItem('token', data.token);
+            toast.success(data.message)
+
+        } catch(error) {
+            toast.error(error?.response?.data?.message || error?.message)
+        }
 
     }
 
