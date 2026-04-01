@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   const loadAllResumes = async () => {
     try {
-      const {data} = await api.get("/api/users/resumes", {headers: {Authorization: token }})
+      const {data} = await api.get("/api/users/resumes")
       setAllResumes(data.resumes);
     } catch(error) {
       toast.error( error?.response?.data?.message || error?.message);
@@ -49,7 +49,7 @@ const Dashboard = () => {
   const createResume = async(e) => {
     try{
          e.preventDefault();
-         const {data} = await api.post("/api/resumes/create", {title}, {headers: {Authorization: token }})
+         const {data} = await api.post("/api/resumes/create", {title})
          setAllResumes([...allResumes, data.resume]);
          setTitle("");
          setShowCreateResume(false);
@@ -64,7 +64,7 @@ const Dashboard = () => {
     setIsLoading(true);
     try{
       const resumeText = await pdfToText(resume);
-      const {data} = await api.post("/api/ai/upload-resume", {title, resumeText}, {headers: {Authorization: token }})
+      const {data} = await api.post("/api/ai/upload-resume", {title, resumeText})
       setTitle("")
       setResume(null);
       setShowUploadResume(false);
@@ -84,7 +84,7 @@ const Dashboard = () => {
     try{
        const confirm = window.confirm("Are you sure you want to delete this resume?");
        if(confirm) {
-         const {data} = await api.delete(`/api/resumes/delete/${resumeId}`, {headers: {Authorization: token }})
+         const {data} = await api.delete(`/api/resumes/delete/${resumeId}`)
          setAllResumes(allResumes.filter(resume => resume._id !== resumeId));
          toast.success(data.message);
        }
@@ -96,7 +96,7 @@ const Dashboard = () => {
   const editTitle = async (event) => {
     event.preventDefault();
     try{
-      const {data} = await api.put(`/api/resumes/update`, {resumeId: editResumeId, resumeData: {title}}, {headers: {Authorization: token }});
+      const {data} = await api.put(`/api/resumes/update`, {resumeId: editResumeId, resumeData: {title}});
       setAllResumes(allResumes.map(resume => resume._id === editResumeId ? {...resume, title} : resume));
       setTitle("");
       setEditResumeId("");
