@@ -1,9 +1,16 @@
 import jwt from "jsonwebtoken";
 
 const protect = async (req, res, next) => {
-    const token = req.headers.authorization;    
+    let token = req.headers.authorization;
+    
+    // Check if token exists
     if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "Unauthorized - No token provided" });
+    }
+
+    // Remove Bearer prefix if present
+    if (token.startsWith("Bearer ")) {
+        token = token.slice(7); // Remove "Bearer " (7 characters)
     }
 
     try {
@@ -11,7 +18,7 @@ const protect = async (req, res, next) => {
         req.userId = decoded.userId;
         next();
     } catch (error) {
-        return res.status(401).json({ message: "Unauthorized" });
+        return res.status(401).json({ message: "Unauthorized - Invalid token" });
     }
 }
 
