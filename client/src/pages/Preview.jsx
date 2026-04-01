@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import ResumePreview from "../components/ResumePreview";
 import { ArrowLeft } from "lucide-react";
+import api from "../configs/api";
+import { setLoading } from "../app/features/authSlice";
 
 const Preview = () => {
 
@@ -12,15 +14,15 @@ const Preview = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const loadResume = async () => {
-        setIsLoading(true);
-
-        const data = await new Promise((resolve) => {
-           setTimeout(() => {
-               resolve(dummyResumeData.find(resume => resume._id === resumeId));
-           }, 500);
-        });
-        setResumeData(data || null);
-        setIsLoading(false);
+        setLoading(true)
+        try{
+            const {data} = await api.get("/api/resumes/public/" + resumeId)
+            setResumeData(data?.resume)
+        } catch(error) {
+            console.error(error.message)
+        } finally {
+            setLoading(false)
+        }
     };
 
 
