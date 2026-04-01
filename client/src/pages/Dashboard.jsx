@@ -18,7 +18,7 @@ import pdfToText from "react-pdftotext";
 
 const Dashboard = () => {
 
-  const {user, token} = useSelector(state => state.auth);
+  const {user} = useSelector(state => state.auth);
 
 
   const colors = ["#9333ea", "#d97706", "#dc2626", "#0284c7", "#16a34a"];
