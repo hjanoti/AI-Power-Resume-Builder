@@ -54,6 +54,7 @@ const ResumeBuilder = () => {
 
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [removeBackground, setRemoveBackground] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     const sections = [
         {id: "personal", name: "Personal Info", icon: User},
@@ -107,6 +108,7 @@ const ResumeBuilder = () => {
     };
 
     const saveResume = async () => {
+        setIsSaving(true);
         try{
             let updatedResumeData = structuredClone(resumeData);
 
@@ -123,7 +125,8 @@ const ResumeBuilder = () => {
 
             const {data} = await api.put("/api/resumes/update", formData, {
                 headers: {
-                    Authorization: token
+                    Authorization: token,
+                    'Content-Type': 'multipart/form-data'
                 }
             });
 
@@ -131,7 +134,8 @@ const ResumeBuilder = () => {
             toast.success(data.message);
         } catch (error) {
             console.error("Error saving resume:", error)
-            
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -220,9 +224,10 @@ const ResumeBuilder = () => {
                             </div>
 
                             <button 
-                            onClick={()=> {toast.promise(saveResume,{loading: 'Saving...'})}}
-                            className="bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring hover:ring-green-400 px-6 py-2 mt-6 text-sm rounded-md">
-                                Save Changes
+                            onClick={()=> {toast.promise(saveResume(),{loading: 'Saving...'})}}
+                            disabled={isSaving}
+                            className={`bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring hover:ring-green-400 px-6 py-2 mt-6 text-sm rounded-md ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                {isSaving ? 'Saving...' : 'Save Changes'}
                             </button>
                         </div>
                     </div>
@@ -235,7 +240,8 @@ const ResumeBuilder = () => {
                                 {resumeData?.public && (
                                     <button 
                                         onClick={handleShare}
-                                        className="flex items-center gap-2 p-2 px-4 text-xs bg-gradient-to-br from-blue-100 to-blue-200 ring-blue-300 text-blue-600 hover:ring transition-colors rounded-lg">
+                                        disabled={isSaving}
+                                        className={`flex items-center gap-2 p-2 px-4 text-xs bg-gradient-to-br from-blue-100 to-blue-200 ring-blue-300 text-blue-600 hover:ring transition-colors rounded-lg ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                         <Share2Icon className="size-4"/>
                                         Share
                                     </button>
@@ -243,7 +249,8 @@ const ResumeBuilder = () => {
 
                                 <button 
                                     onClick={changeResumeVisibility}
-                                    className="flex items-center gap-2 p-2 px-4 text-xs bg-gradient-to-br from-purple-100 to-purple-200 ring-purple-300 text-purple-600 hover:ring transition-colors rounded-lg">
+                                    disabled={isSaving}
+                                    className={`flex items-center gap-2 p-2 px-4 text-xs bg-gradient-to-br from-purple-100 to-purple-200 ring-purple-300 text-purple-600 hover:ring transition-colors rounded-lg ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                     {
                                         resumeData?.public ? (
                                             <EyeIcon className="size-4"/>
@@ -257,7 +264,8 @@ const ResumeBuilder = () => {
 
                                 <button 
                                    onClick={downloadResume}
-                                 className="flex items-center gap-2 p-2 px-4 text-xs bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 hover:ring transition-colors rounded-lg">
+                                   disabled={isSaving}
+                                   className={`flex items-center gap-2 p-2 px-4 text-xs bg-gradient-to-br from-green-100 to-green-200 ring-green-300 text-green-600 hover:ring transition-colors rounded-lg ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                     <DownloadIcon className="size-4"/>
                                     Download
                                 </button>
