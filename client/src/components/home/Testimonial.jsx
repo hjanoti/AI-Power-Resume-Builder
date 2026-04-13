@@ -7,23 +7,27 @@ const Testimonial = () => {
     const cardsData = [
         {
             image: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200',
-            name: 'Briar Martin',
-            handle: '@neilstellar',
+            name: 'Priya Sharma',
+            handle: '@priya_dev',
+            text: "This AI resume builder helped me land 3 interviews in just one week! The AI suggestions for my skills section were spot on."
         },
         {
             image: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200',
-            name: 'Avery Johnson',
-            handle: '@averywrites',
+            name: 'Rahul Verma',
+            handle: '@rahul_codes',
+            text: "I was struggling to write my professional summary. The AI generated exactly what I needed. Got hired at a top tech company!"
         },
         {
             image: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60',
             name: 'Jordan Lee',
             handle: '@jordantalks',
+            text: "The templates look professional and the PDF export is perfect. My resume finally stands out from the crowd."
         },
         {
             image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60',
-            name: 'Avery Johnson',
-            handle: '@averywrites',
+            name: 'Alex Thompson',
+            handle: '@alext',
+            text: "Saved me hours of formatting work. Built my resume in 10 minutes and it looks better than anything I could make myself."
         },
     ];
 
@@ -41,7 +45,7 @@ const Testimonial = () => {
                     <span className="text-xs text-slate-500">{card.handle}</span>
                 </div>
             </div>
-            <p className="text-sm py-4 text-gray-800">Radiant made undercutting all of our competitors an absolute breeze.</p>
+            <p className="text-sm py-4 text-gray-800">{card.text}</p>
         </div>
     );
 

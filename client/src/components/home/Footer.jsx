@@ -1,77 +1,76 @@
+import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 
 const Footer = () => {
+    const scrollToSection = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
-        <>
-         <footer id="footer" className="flex flex-wrap justify-center lg:justify-between overflow-hidden gap-10 md:gap-20 py-16 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500 bg-gradient-to-r from-white via-green-200/60 mt-30">
-                <div className="flex flex-wrap items-start gap-10 md:gap-[60px] xl:gap-[140px]">
-                    <a href="#">
-                        <img src={logo} alt="Logo" className="h-8" />
-                    </a>
-                    <div>
-                        <p className="text-slate-800 font-semibold">Product</p>
-                        <ul className="mt-2 space-y-2">
-                            <li><a href="/" className="hover:text-green-600 transition">Home</a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">Support</a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">Pricing</a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">Affiliate</a></li>
+        <footer id="footer" className=" mt-28 bg-gradient-to-r from-white via-green-50 to-white py-16 px-6 md:px-16 lg:px-24 xl:px-32 text-[13px] text-gray-500">
+            <div className="max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12 text-center">
+                    {/* Brand */}
+                    <div className="flex flex-col items-start">
+                        <Link to="/" className="inline-block mb-4">
+                            <img src={logo} alt="AI Resume Builder" className="h-8" />
+                        </Link>
+                        <p className="text-left text-sm leading-relaxed">
+                            Build professional, ATS-friendly resumes with AI-powered assistance. Land your dream job faster.
+                        </p>
+                    </div>
+
+                    {/* Product */}
+                    <div className="flex flex-col items-center">
+                        <p className="text-slate-800 font-semibold mb-4">Product</p>
+                        <ul className="space-y-3 flex flex-col items-center">
+                            <li><Link to="/" className="hover:text-green-600 transition">Home</Link></li>
+                            <li><Link to="/app" className="hover:text-green-600 transition">Create Resume</Link></li>
+                            <li><button onClick={() => scrollToSection('features')} className="hover:text-green-600 transition">Features</button></li>
+                            <li><button onClick={() => scrollToSection('testimonial')} className="hover:text-green-600 transition">Testimonials</button></li>
                         </ul>
                     </div>
-                    <div>
-                        <p className="text-slate-800 font-semibold">Resources</p>
-                        <ul className="mt-2 space-y-2">
-                            <li><a href="/" className="hover:text-green-600 transition">Privacy</a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">Terms</a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">Community</a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">Careers<span className="text-xs text-white bg-green-600 rounded-md ml-2 px-2 py-1">We’re hiring!</span></a></li>
-                            <li><a href="/" className="hover:text-green-600 transition">About</a></li>
+
+                    {/* Company */}
+                    <div className="flex flex-col items-center">
+                        <p className="text-slate-800 font-semibold mb-4">Company</p>
+                        <ul className="space-y-3 flex flex-col items-center">
+                            <li><a href="mailto:hjanoti9098@gmail.com" className="hover:text-green-600 transition">Contact</a></li>
+                            <li><Link to="/app" className="hover:text-green-600 transition">Get Started</Link></li>
                         </ul>
                     </div>
-                </div>
-                <div className="flex flex-col max-md:items-center max-md:text-center gap-2 items-end">
-                    <p className="max-w-60">Making every customer feel valued—no matter the size of your audience.</p>
-                    <div className="flex items-center gap-4 mt-3">
-                        <a href="https://dribbble.com" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-dribbble size-5 hover:text-green-500" aria-hidden="true">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94"></path>
-                                <path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32"></path>
-                                <path d="M8.56 2.75c4.37 6 6 9.42 8 17.72"></path>
-                            </svg>
-                        </a>
-                        <a href="https://www.linkedin.com/in/heera-singh-janoti/" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-linkedin size-5 hover:text-green-500" aria-hidden="true">
-                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                                <rect width="4" height="12" x="2" y="9"></rect>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
-                        </a>
-                        <a href="https://x.com" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-twitter size-5 hover:text-green-500" aria-hidden="true">
-                                <path
-                                    d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z">
-                                </path>
-                            </svg>
-                        </a>
-                        <a href="https://www.youtube.com" target="_blank" rel="noreferrer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-youtube size-6 hover:text-green-500" aria-hidden="true">
-                                <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17">
-                                </path>
-                                <path d="m10 15 5-3-5-3z"></path>
-                            </svg>
-                        </a>
+
+                    {/* Connect */}
+                    <div className="flex flex-col items-center">
+                        <p className="text-slate-800 font-semibold mb-4">Connect</p>
+                        <div className="flex items-center justify-center gap-4">
+                            <a href="https://www.linkedin.com/in/heera-singh-janoti/" target="_blank" rel="noreferrer" className="hover:text-green-600 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                    <rect width="4" height="12" x="2" y="9"></rect>
+                                    <circle cx="4" cy="4" r="2"></circle>
+                                </svg>
+                            </a>
+                            <a href="https://github.com/hjanoti" target="_blank" rel="noreferrer" className="hover:text-green-600 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
-                    <p className="mt-3 text-center">© 2026 Resume Builder</p>
                 </div>
-            </footer>
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-            
-                * {
-                    font-family: 'Poppins', sans-serif;
-                }
-            `}</style>    
-        </>
+
+                {/* Bottom */}
+                <div className="border-t border-green-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-sm">© 2026 AI Resume Builder. All rights reserved.</p>
+                    <p className="text-sm">Built with 💚 by Heera Singh Janoti</p>
+                </div>
+            </div>
+        </footer>
     );
 };
 
