@@ -94,6 +94,10 @@ export const updateResume = async (req, res) => {
         const {resumeId, resumeData, removeBackground} = req.body;
         const image = req.file;
 
+        console.log("req.file:", req.file);
+        console.log("image buffer exists:", !!image?.buffer);
+        console.log("image buffer length:", image?.buffer?.length);
+
         let resumeDataCopy;
         if(typeof resumeData === 'string'){
             resumeDataCopy = await JSON.parse(resumeData);
@@ -102,16 +106,30 @@ export const updateResume = async (req, res) => {
         }
 
         if(image){
-            const response = await imageKit.files.upload({
-              file: image.buffer,
-              fileName: "resume.png",
-              folder: "user-resumes",
-              transformation: {
-                  pre: "w-300,h-300,fo-face,z-0.75" + (removeBackground ? ",e-bgremove" : "")
-              }
-            });
-
-            resumeDataCopy.personal_info.image = response.url;
+            console.log("Uploading to ImageKit...");
+            console.log("Buffer length:", image.buffer.length);
+            
+            try {
+                const transformation = removeBackground === "yes" ? "w-300,h-300,fo-face,z-0.75,e-bgremove" : "w-300,h-300,fo-face,z-0.75";
+                
+                const base64Image = image.buffer.toString('base64');
+                console.log("Base64 length:", base64Image.length);
+                
+                const response = await imageKit.files.upload({
+                  file: base64Image,
+                  fileName: "resume.png",
+                  folder: "user-resumes",
+                  transformation: {
+                      pre: transformation
+                  }
+                });
+                
+                console.log("ImageKit response:", response);
+                resumeDataCopy.personal_info.image = response.url;
+            } catch (imageKitError) {
+                console.error("ImageKit error:", imageKitError);
+                throw new Error("Image upload failed: " + imageKitError.message);
+            }
         }
 
         //Update resume

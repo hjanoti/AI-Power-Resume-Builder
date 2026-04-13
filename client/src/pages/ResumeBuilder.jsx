@@ -110,25 +110,40 @@ const ResumeBuilder = () => {
     const saveResume = async () => {
         setIsSaving(true);
         try{
+            // Save image reference BEFORE cloning (structuredClone destroys File objects)
+            const imageFile = resumeData.personal_info?.image;
+            
             let updatedResumeData = structuredClone(resumeData);
-
-            // Remove image from updatedResumeData
-            if(typeof resumeData.personal_info.image === "object"){
-                delete updatedResumeData.personal_info.image;
-            }
+            
+            // Remove image from JSON data
+            delete updatedResumeData.personal_info.image;
 
             const formData = new FormData();
             formData.append("resumeId", resumeId);
             formData.append("resumeData", JSON.stringify(updatedResumeData));
             removeBackground && formData.append("removeBackground", "yes");
-            typeof resumeData.personal_info.image === "object" && formData.append("image", resumeData.personal_info.image);
+            
+            console.log("Image file:", imageFile);
+            console.log("Is File?:", imageFile instanceof File);
+            
+            if(imageFile instanceof File){
+                formData.append("image", imageFile);
+            }
 
-            const {data} = await api.put("/api/resumes/update", formData, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL || "http://localhost:3000"}/api/resumes/update`, {
+                method: 'PUT',
                 headers: {
-                    Authorization: token,
-                    'Content-Type': 'multipart/form-data'
-                }
+                    'Authorization': token
+                },
+                body: formData
             });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
+            }
+            
+            const data = await response.json();
 
             setResumeData(data.resume)
             toast.success(data.message);
@@ -199,7 +214,7 @@ const ResumeBuilder = () => {
                             {/* Form Content */}
                             <div className="space-y-6">
                                 {activeSection.id === "personal" && (
-                                    <PersonalInfoForm data={resumeData?.personal_info} onChange={(data) => setResumeData(prev => ({...prev, personal_info: data}))} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground}/>
+                                    <PersonalInfoForm data={resumeData?.personal_info} onChange={(data) => {console.log("PersonalInfoForm onChange:", data); setResumeData(prev => ({...prev, personal_info: data}))}} removeBackground={removeBackground} setRemoveBackground={setRemoveBackground}/>
                                 )}
 
                                 {activeSection.id === "summary" && (

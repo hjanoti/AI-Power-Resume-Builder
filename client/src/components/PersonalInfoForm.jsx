@@ -6,10 +6,11 @@ const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground
         onChange({...data, [field]: value});
     }
 
-    const handleImageUpload = (field, value) => 
-        { 
-          onChange({...data, [field]: value});
-        };
+    const handleImageUpload = (field, value) => {
+        console.log("Image selected:", value);
+        console.log("Is File?:", value instanceof File);
+        onChange({...data, [field]: value});
+    };
 
     const fields = [
         {
