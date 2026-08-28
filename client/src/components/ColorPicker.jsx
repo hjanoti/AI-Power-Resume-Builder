@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const ColorPicker = ({selectedColor, onChange}) => {
 
-    const color = [
+    const colors = [
         { name: 'Red', value: '#EF4444' },
         { name: 'Blue', value: '#3B82F6' },
         { name: 'Indigo', value: '#6366F1' },
@@ -30,12 +30,12 @@ const ColorPicker = ({selectedColor, onChange}) => {
             {
                 isOpen && (
                     <div className="grid grid-cols-4 w-60 gap-2 absolute top-full left-0 right-0 p-3 mt-2 z-10 bg-white rounded-md border border-gray-200 shadow-md">
-                        {color.map((color) => (
+                        {colors.map((color) => (
                             <div 
                             key={color.value}
                             onClick={() => {onChange(color.value); setIsOpen(false);}}
+                            title={color.name}
                             className="relative cursor-pointer group flex flex-col rounded-full"
-                            // style={{backgroundColor: color.value}}
                             >
                                 <div 
                                 className={`w-12 h-12 rounded-full border-2 border-transparent group-hover:border-black/25 transition-colors`}
@@ -48,7 +48,9 @@ const ColorPicker = ({selectedColor, onChange}) => {
                                 )}
                             </div>
                         ))}
-                        <p className="text-xs text-center mt-1 text-gray-600">{color.name}</p>
+                        <p className="col-span-4 text-xs text-center mt-1 text-gray-600">
+                            {colors.find((c) => c.value === selectedColor)?.name || "Custom"}
+                        </p>
                     </div>
                 )
             }

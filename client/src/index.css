@@ -6,6 +6,17 @@
 }
 
 @layer base {
+  /* The page is a light design, but nothing painted a background, so a
+     dark-mode browser rendered dark text on its own dark canvas. */
+  html {
+    color-scheme: light;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-slate-900;
+  }
+
   button {
     @apply cursor-pointer;
   }
@@ -14,5 +25,28 @@
   }
   textarea {
     @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-lg resize-none;
+  }
+
+  /* Visible keyboard focus for anyone navigating without a mouse. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-green-600;
+  }
+}
+
+@media print {
+  /* Browsers drop background colours when printing, which would flatten the
+     accent colour out of every template. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

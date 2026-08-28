@@ -31,13 +31,20 @@ api.interceptors.response.use(
         if (error.code === 'ECONNABORTED' || !error.response) {
             console.warn('Request timeout or network error - Render may be spinning up');
         }
-        
-        // Handle 401 Unauthorized
+
+        // Handle 401 Unauthorized. Only bounce to login from a signed-in screen,
+        // so an expired token cannot kick a visitor off a public page.
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
-            window.location.href = '/app?state=login';
+
+            const onProtectedRoute = window.location.pathname.startsWith('/app');
+            const alreadyOnLogin = window.location.search.includes('state=login');
+
+            if (onProtectedRoute && !alreadyOnLogin) {
+                window.location.href = '/app?state=login';
+            }
         }
-        
+
         return Promise.reject(error);
     }
 );

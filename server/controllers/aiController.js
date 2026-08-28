@@ -1,12 +1,16 @@
 import ai from "../configs/ai.js";
 import Resume from "../models/Resume.js";
+import { asString, pickResumeFields } from "../utils/validators.js";
+
+// Keeps a single request from sending a huge document to the model.
+const MAX_CONTENT_LENGTH = 20000;
 
 
 // Controller for enhancing a resume's profession summary
 // POST: /api/ai/enhance-pro-sum
 export const enhanceProfessionalSummary = async (req, res) => {
     try{
-        const {userContent} = req.body;
+        const userContent = asString(req.body.userContent).slice(0, MAX_CONTENT_LENGTH);
 
         if(!userContent){
             return res.status(400).json({ message: "Missing required fields" });
@@ -39,7 +43,7 @@ export const enhanceProfessionalSummary = async (req, res) => {
 // POST: /api/ai/enhance-job-desc
 export const enhanceJobDescription = async (req, res) => {
     try{
-        const {userContent} = req.body;
+        const userContent = asString(req.body.userContent).slice(0, MAX_CONTENT_LENGTH);
 
         if(!userContent){
             return res.status(400).json({ message: "Missing required fields" });
@@ -73,11 +77,12 @@ export const enhanceJobDescription = async (req, res) => {
 export const uploadResume = async (req, res) => {
     try{
         
-        const {resumeText, title} = req.body;
+        const resumeText = asString(req.body.resumeText).slice(0, MAX_CONTENT_LENGTH);
+        const title = asString(req.body.title) || "Untitled Resume";
         const userId = req.userId
 
         if(!resumeText){
-            return res.status(400).json({ message: "Missing required fields" });
+            return res.status(400).json({ message: "Could not read any text from this PDF" });
         }
 
         const systemPrompt = "You are an expert AI Agent to extract data from resume."
@@ -142,11 +147,18 @@ export const uploadResume = async (req, res) => {
         });
 
         const extractedData = response.choices[0].message.content;
-        const parsedData = JSON.parse(extractedData);
+
+        let parsedData;
+        try {
+            parsedData = JSON.parse(extractedData);
+        } catch {
+            return res.status(502).json({ message: "Could not read this resume. Please try again." });
+        }
+
         const newResume = await Resume.create({
+            ...pickResumeFields(parsedData),
             userId,
             title,
-            ...parsedData,
         });
         return res.json({resumeId: newResume._id});
 

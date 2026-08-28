@@ -1,16 +1,52 @@
-import { User, Mail, Phone, MapPin, BriefcaseBusiness, Linkedin, Github, Globe } from "lucide-react";
+import { User, Mail, Phone, MapPin, BriefcaseBusiness, Linkedin, Globe, X } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import toast from "react-hot-toast";
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB, matches the server limit
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground}) => {
 
+    const info = data || {};
+
+    const previewUrl = useMemo(
+        () => (info.image instanceof File ? URL.createObjectURL(info.image) : ""),
+        [info.image]
+    );
+
+    // A blob URL has to be revoked, or every image swap leaks memory
+    // for the life of the page.
+    useEffect(() => {
+        if (!previewUrl) return;
+        return () => URL.revokeObjectURL(previewUrl);
+    }, [previewUrl]);
+
     const handleInputChange = (field, value) => {
-        onChange({...data, [field]: value});
+        onChange({...info, [field]: value});
     }
 
-    const handleImageUpload = (field, value) => {
-        console.log("Image selected:", value);
-        console.log("Is File?:", value instanceof File);
-        onChange({...data, [field]: value});
+    const handleImageUpload = (file) => {
+        if (!file) return;
+
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            toast.error("Please choose a JPG, PNG or WEBP image");
+            return;
+        }
+
+        if (file.size > MAX_IMAGE_SIZE) {
+            toast.error("That image is larger than 5 MB");
+            return;
+        }
+
+        onChange({...info, image: file});
     };
+
+    const clearImage = () => {
+        onChange({...info, image: ""});
+        setRemoveBackground(false);
+    };
+
+    const imageSrc = info.image instanceof File ? previewUrl : info.image;
 
     const fields = [
         {
@@ -31,9 +67,6 @@ const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground
         {
             key: "linkedin", label: "LinkedIn Profile", icon: Linkedin, type: "url", required: false
         },
-        // {
-        //     key: "github", label: "GitHub Profile", icon: Github, type: "url", required: false
-        // },
         {
             key: "website", label: "Personal Website", icon: Globe, type: "url", required: false
         }
@@ -47,24 +80,41 @@ const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground
                 <input 
                   type="file" 
                   id="profile-image" 
-                  accept="image/jpeg,image/png" 
+                  accept="image/jpeg,image/png,image/webp"
                   className="hidden" 
-                  onChange={(e) => handleImageUpload('image', e.target.files[0])} />
-                <label htmlFor="profile-image" className="cursor-pointer">
-                    {data?.image ? (
-                        <img 
-                          src={typeof data.image === 'string' ? data.image : URL.createObjectURL(data.image)} 
-                          alt="Profile" 
-                          className="w-16 h-16 rounded-full object-cover mt-5 ring ring-slate-300 hover:opacity-80 cursor-pointer" />
-                    ) : (
+                  onChange={(e) => {
+                      handleImageUpload(e.target.files[0]);
+                      // Reset so picking the same file again still fires onChange.
+                      e.target.value = "";
+                  }} />
+
+                {imageSrc ? (
+                    <div className="relative mt-5">
+                        <label htmlFor="profile-image" className="cursor-pointer">
+                            <img
+                              src={imageSrc}
+                              alt="Profile"
+                              className="size-16 rounded-full object-cover ring ring-slate-300 transition-opacity hover:opacity-80" />
+                        </label>
+                        <button
+                            type="button"
+                            onClick={clearImage}
+                            aria-label="Remove profile image"
+                            className="absolute -top-1 -right-1 rounded-full border border-slate-300 bg-white p-0.5 text-slate-500 shadow-sm transition-colors hover:text-red-500"
+                        >
+                            <X className="size-3" />
+                        </button>
+                    </div>
+                ) : (
+                    <label htmlFor="profile-image" className="cursor-pointer">
                         <div className="inline-flex items-center gap-2 mt-5 text-slate-600 hover:text-slate-700 cursor-pointer">
                             <User className="size-10 rounded-full p-2.5 border" />
                             Upload user image
                         </div>
-                    )}
-                </label>
+                    </label>
+                )}
 
-                {typeof data?.image === 'object' && (
+                {info.image instanceof File && (
                     <div className="flex flex-col gap-1 pl-4 text-sm">
                         <p>Remove background</p>
                         <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-2">
@@ -78,19 +128,20 @@ const PersonalInfoForm = ({data, onChange, removeBackground, setRemoveBackground
 
             {
                 fields.map((field) => (
-                    <div key={field?.key} className="space-y-1 mt-5">
-                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                            {field?.icon && <field.icon className="size-4" />}
-                            {field?.label}
-                            {field?.required && <span className="text-red-500">*</span>}
+                    <div key={field.key} className="space-y-1 mt-5">
+                        <label htmlFor={`personal-${field.key}`} className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                            {field.icon && <field.icon className="size-4" />}
+                            {field.label}
+                            {field.required && <span className="text-red-500">*</span>}
                         </label>
                         <input 
-                          type={field?.type || 'text'} 
-                          value={data[field?.key] || ''} 
-                          onChange={(e) => handleInputChange(field?.key, e.target.value)} 
+                          id={`personal-${field.key}`}
+                          type={field.type || 'text'} 
+                          value={info[field.key] || ''} 
+                          onChange={(e) => handleInputChange(field.key, e.target.value)} 
                           className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors text-sm" 
-                          placeholder={`Enter Your ${field?.label?.toLowerCase()}`}
-                          required={field?.required}
+                          placeholder={`Enter Your ${field.label.toLowerCase()}`}
+                          required={field.required}
                         />
                     </div>
                 ))

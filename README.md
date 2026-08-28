@@ -84,10 +84,14 @@ npm run dev      # runs on http://localhost:5173
 
 ## Environment Variables
 
+> Copy `server/.env.example` to `server/.env` and `client/.env.example` to
+> `client/.env`, then fill in the values below.
+
 ### Server (`server/.env`)
 
 ```env
 JWT_SECRET=
+CLIENT_URL=http://localhost:5173
 MONGODB_URL=
 IMAGEKIT_PRIVATE_KEY=
 IMAGEKIT_PUBLIC_KEY=
@@ -191,6 +195,19 @@ AI-Power-Resume-Builder/
 
 ---
 
+## Security
+
+- Passwords hashed with bcrypt; JWTs signed with `JWT_SECRET` and valid for 7 days
+- Every resume route is scoped to the signed-in owner, so one account cannot read,
+  edit or delete another account's resume
+- Request bodies are type-checked and field-allowlisted before they reach MongoDB
+- `helmet` sets security headers, and CORS is restricted to `CLIENT_URL` plus
+  Netlify origins in production
+- Rate limits: 300 requests / 15 min per IP overall, 20 auth attempts / 15 min,
+  and 40 AI calls / hour per user
+
+---
+
 ## Roadmap
 
 - [ ] Direct PDF export (not print-based)
@@ -198,6 +215,7 @@ AI-Power-Resume-Builder/
 - [ ] LinkedIn profile import
 - [ ] Cover letter generator
 - [ ] Auto-save drafts & version history
+- [x] Unsaved-changes warning before leaving the editor
 - [ ] Multi-language support
 - [ ] More templates
 

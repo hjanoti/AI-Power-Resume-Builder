@@ -1,30 +1,142 @@
+# ---------------------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------------------
 node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+jspm_packages/
+
+# Lockfiles are intentionally NOT ignored — they must be committed so
+# everyone (and Render/Netlify) installs the exact same versions.
+
+# ---------------------------------------------------------------------------
+# Environment files & secrets  — never commit these
+# ---------------------------------------------------------------------------
 .env
-.env.local
-.env.*.local
-client/.env
-server/.env
+.env.*
+*.env
 
-client/dist/
-client/dist-ssr/
-server/dist/
+# ...but the templates must stay in the repo
+!.env.example
+!.env.template
+!*.env.example
 
+# Keys, certificates and credential dumps
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials.json
+serviceAccount*.json
+secrets.json
+*secret*.json
+
+# ---------------------------------------------------------------------------
+# Build output
+# ---------------------------------------------------------------------------
+dist/
+dist-ssr/
+build/
+out/
+.vite/
+*.tsbuildinfo
+
+# ---------------------------------------------------------------------------
+# Uploads & runtime data (user files should never land in git)
+# ---------------------------------------------------------------------------
+uploads/
 server/uploads/*
 !server/uploads/.gitkeep
+public/uploads/
+tmp/
+temp/
 
-.DS_Store
+# ---------------------------------------------------------------------------
+# Logs
+# ---------------------------------------------------------------------------
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.node_repl_history
 
-.vscode/
+# ---------------------------------------------------------------------------
+# Testing & coverage
+# ---------------------------------------------------------------------------
+coverage/
+*.lcov
+.nyc_output/
+
+# ---------------------------------------------------------------------------
+# Caches
+# ---------------------------------------------------------------------------
+.cache/
+.npm/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.turbo/
+
+# ---------------------------------------------------------------------------
+# Deployment platforms
+# ---------------------------------------------------------------------------
+.vercel
+.netlify/
+.serverless/
+.firebase/
+
+# ---------------------------------------------------------------------------
+# Editors & IDEs
+# ---------------------------------------------------------------------------
+.vscode/*
+!.vscode/extensions.json
 .idea/
-
+*.iml
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 *.swp
 *~
+.history/
+*.sublime-workspace
+*.sublime-project
 
-coverage/
-.cache/
+# Local agent/tool settings that are personal, not project config
+.claude/settings.local.json
+
+# ---------------------------------------------------------------------------
+# Operating system junk
+# ---------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------------------------------------------------------------------------
+# Scratch / backup files
+# ---------------------------------------------------------------------------
+*.bak
+*.orig
+*.rej
 *.tmp
 *.temp
+*.local

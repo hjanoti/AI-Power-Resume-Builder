@@ -1,12 +1,12 @@
 import { Briefcase, Plus, Trash2, Sparkles } from "lucide-react";
-import { useSelector } from "react-redux";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
 import api from "../configs/api";
+import Spinner from "./Spinner";
+import getErrorMessage from "../utils/getErrorMessage";
 
 const ExperienceForm = ({data, onChange}) => {
 
-    const {token} = useSelector((state) => state.auth);
     const [generatingIndex, setGeneratingIndex] = useState(-1);
 
     const addExperience = () => {
@@ -33,19 +33,21 @@ const ExperienceForm = ({data, onChange}) => {
     };
 
     const generateDescription = async (index) => {
-        setGeneratingIndex(index);
         const experience = data[index];
+
+        if (!experience.position?.trim() || !experience.company?.trim()) {
+            toast.error("Add the company and position first, then let AI write the description.");
+            return;
+        }
+
+        setGeneratingIndex(index);
         const prompt = `enhance this job description ${experience.description} for the position of ${experience.position} at ${experience.company}.`;
         try {
-            const {data} = await api.post('api/ai/enhance-job-desc', {userContent: prompt}, {
-                headers: {
-                    Authorization: token
-                }
-            });
-            updateExperience(index, 'description', data.enhancedContent);
-
+            const {data: response} = await api.post('/api/ai/enhance-job-desc', {userContent: prompt});
+            updateExperience(index, 'description', response.enhancedContent);
+            toast.success("Description enhanced");
         } catch (error) {
-            console.error(error?.message);
+            toast.error(getErrorMessage(error, "Could not enhance the description"));
         } finally {
             setGeneratingIndex(-1);
         }
@@ -137,7 +139,7 @@ const ExperienceForm = ({data, onChange}) => {
                                             disabled={generatingIndex === index || !experience.position || !experience.company}
                                             className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50"> 
                                             {generatingIndex === index ? (
-                                                <Loader2 className="w-3 h-3 animate-spin" />
+                                                <Spinner className="size-3" />
                                             ) : (
                                                 <Sparkles className="w-3 h-3" />
                                             )}
@@ -147,7 +149,8 @@ const ExperienceForm = ({data, onChange}) => {
                                     <textarea
                                         value={experience.description || ''}
                                         onChange={(e) => updateExperience(index, 'description', e.target.value)}
-                                        className="w-full px-3 py-2 text-sm rounded-lg resize-none"
+                                        disabled={generatingIndex === index}
+                                        className="w-full px-3 py-2 text-sm rounded-lg resize-none disabled:bg-slate-50"
                                         rows="4"
                                         placeholder="Describe your responsibilities and achievements..."
                                     />
